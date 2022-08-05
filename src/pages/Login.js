@@ -28,6 +28,15 @@ export default class Login extends React.Component {
     history.push('/settings');
   }
 
+  handleClick = async () => {
+    const END_POINT = 'https://opentdb.com/api_token.php?command=request';
+    const response = await fetch(END_POINT);
+    const data = (await response.json()).token;
+    localStorage.setItem('token', data);
+    const { history } = this.props;
+    history.push('/gamepage');
+  }
+
   render() {
     const { username, email, disabled } = this.state;
     return (
@@ -54,6 +63,7 @@ export default class Login extends React.Component {
             data-testid="btn-play"
             type="button"
             disabled={ disabled }
+            onClick={ this.handleClick }
           >
             Play
           </button>
