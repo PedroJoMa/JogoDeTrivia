@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import logo from '../trivia.png';
 import '../App.css';
@@ -21,6 +22,11 @@ export default class Login extends React.Component {
       }
     });
   };
+
+  hendleClickSettings = () => {
+    const { history } = this.props;
+    history.push('/settings');
+  }
 
   render() {
     const { username, email, disabled } = this.state;
@@ -51,8 +57,19 @@ export default class Login extends React.Component {
           >
             Play
           </button>
+          <button
+            type="button"
+            data-testid="btn-settings"
+            onClick={ this.hendleClickSettings }
+          >
+            Settings
+          </button>
         </header>
       </div>
     );
   }
 }
+
+Login.propTypes = {
+  history: PropTypes.object,
+}.isRequired;
