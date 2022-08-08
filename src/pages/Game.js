@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import Header from '../components/Header';
+import '../styles/Game.css';
 
 export default class Game extends React.Component {
   state = {
@@ -52,14 +53,20 @@ export default class Game extends React.Component {
           <div data-testid="answer-options">
             {response.sort(() => Math.random() - RANDOM_HELPER).map((answer, index) => {
               let dataTestId = 'correct-answer';
+              let answerColor = 'correctAnswer';
               if (answer !== currQuestion.correct_answer) {
                 dataTestId = `wrong-answer-${index}`;
+                answerColor = 'wrongAnswer';
               }
               return (
                 <button
+                  className={ answerColor }
                   key={ answer }
                   type="button"
                   data-testid={ dataTestId }
+                  onClick={ () => this.setAnswerColor(
+                    answer, currQuestion.correct_answer,
+                  ) }
                 >
                   {answer}
                 </button>
