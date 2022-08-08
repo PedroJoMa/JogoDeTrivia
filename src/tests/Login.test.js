@@ -79,8 +79,17 @@ describe('Testando a página Login', () => {
 
     expect(startButton).toBeEnabled()
 
-    userEvent.click(startButton);
-
+    
     expect(fetch).toBeCalled();
+    
+    const settingsButton = screen.getByRole('button', {name: 'Settings'});
+    expect(settingsButton).toBeInTheDocument();
+    
+    userEvent.click(settingsButton);
+
+    const { pathname } = history.location;
+    expect(pathname).toBe('/settings');
+
+
   })
 })
