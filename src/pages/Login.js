@@ -1,9 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import logo from '../trivia.png';
 import '../App.css';
+import { addUser } from '../redux/actions';
 
-export default class Login extends React.Component {
+class Login extends React.Component {
   state = {
     username: '',
     email: '',
@@ -22,13 +24,20 @@ export default class Login extends React.Component {
     });
   };
 
+  addUser = () => {
+    const { username, email } = this.state;
+    const { addUserDispatch } = this.props;
+    addUserDispatch({ username, email });
+  }
+
   handleClick = async () => {
     const END_POINT = 'https://opentdb.com/api_token.php?command=request';
     const response = await fetch(END_POINT);
     const data = (await response.json()).token;
     localStorage.setItem('token', data);
+    this.addUser();
     const { history } = this.props;
-    history.push('/gamepage');
+    history.push('/game');
   }
 
   render() {
@@ -66,6 +75,13 @@ export default class Login extends React.Component {
     );
   }
 }
+
 Login.propTypes = {
   history: PropTypes.object,
 }.isRequired;
+
+const mapDispatchToProps = (dispatch) => ({
+  addUserDispatch: (payload) => dispatch(addUser(payload)),
+});
+
+export default connect(null, mapDispatchToProps)(Login);
