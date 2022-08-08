@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+
 import logo from '../trivia.png';
 import '../App.css';
 import { addUser } from '../redux/actions';
@@ -28,6 +29,11 @@ class Login extends React.Component {
     const { username, email } = this.state;
     const { addUserDispatch } = this.props;
     addUserDispatch({ username, email });
+  }
+
+  hendleClickSettings = () => {
+    const { history } = this.props;
+    history.push('/settings');
   }
 
   handleClick = async () => {
@@ -69,6 +75,13 @@ class Login extends React.Component {
             onClick={ this.handleClick }
           >
             Play
+          </button>
+          <button
+            type="button"
+            data-testid="btn-settings"
+            onClick={ this.hendleClickSettings }
+          >
+            Settings
           </button>
         </header>
       </div>
