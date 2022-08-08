@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import Header from '../components/Header';
 
 export default class Game extends React.Component {
   state = {
@@ -41,29 +42,32 @@ export default class Game extends React.Component {
     console.log(response);
 
     return loading ? (<div> Loading...</div>) : (
-      <main>
-        <p data-testid="question-category">{currQuestion.category}</p>
-        <p data-testid="question-text">
-          {currQuestion.question}
-        </p>
-        <div data-testid="answer-options">
-          {response.sort(() => Math.random() - RANDON_HELPER).map((answer, index) => {
-            let dataTestId = 'correct-answer';
-            if (answer !== currQuestion.correct_answer) {
-              dataTestId = `wrong-answer-${index}`;
-            }
-            return (
-              <button
-                key={ answer }
-                type="button"
-                data-testid={ dataTestId }
-              >
-                {answer}
-              </button>
-            );
-          })}
-        </div>
-      </main>
+      <div>
+        <Header />
+        <main>
+          <p data-testid="question-category">{currQuestion.category}</p>
+          <p data-testid="question-text">
+            {currQuestion.question}
+          </p>
+          <div data-testid="answer-options">
+            {response.sort(() => Math.random() - RANDON_HELPER).map((answer, index) => {
+              let dataTestId = 'correct-answer';
+              if (answer !== currQuestion.correct_answer) {
+                dataTestId = `wrong-answer-${index}`;
+              }
+              return (
+                <button
+                  key={ answer }
+                  type="button"
+                  data-testid={ dataTestId }
+                >
+                  {answer}
+                </button>
+              );
+            })}
+          </div>
+        </main>
+      </div>
     );
   }
 }
