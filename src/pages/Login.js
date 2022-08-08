@@ -31,7 +31,7 @@ class Login extends React.Component {
     addUserDispatch({ username, email });
   }
 
-  hendleClickSettings = () => {
+  handleClickSettings = () => {
     const { history } = this.props;
     history.push('/settings');
   }
@@ -79,7 +79,7 @@ class Login extends React.Component {
           <button
             type="button"
             data-testid="btn-settings"
-            onClick={ this.hendleClickSettings }
+            onClick={ this.handleClickSettings }
           >
             Settings
           </button>

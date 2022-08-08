@@ -6,16 +6,6 @@ import userEvent from "@testing-library/user-event";
 import mockData from './helpers/mockData';
 import App from '../App';
 
-// const fetchMock = jest.spyOn(global, 'fetch').mockImplementation(() => {
-//   return (
-//   Promise.resolve({
-//     json: () => Promise.resolve(mockData),
-//     resolve: true,
-//   }));
-// });
-
-// afterEach(() => jest.clearAllMocks());
-
 jest.spyOn(global, 'fetch');
     global.fetch.mockResolvedValue({
       json: jest.fn().mockResolvedValue(mockData),
