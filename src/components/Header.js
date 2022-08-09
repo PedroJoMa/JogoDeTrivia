@@ -11,7 +11,7 @@ class Header extends React.Component {
   }
 
   render() {
-    const { getUsername } = this.props;
+    const { getUsername, getScore } = this.props;
     return (
       <header>
         <img
@@ -20,20 +20,22 @@ class Header extends React.Component {
           src={ this.setGravatarHash() }
         />
         <p data-testid="header-player-name">{ getUsername }</p>
-        <p data-testid="header-score">0</p>
+        <p data-testid="header-score">{getScore}</p>
       </header>
     );
   }
 }
 
 Header.propTypes = {
-  getUsername: PropTypes.string.isRequired,
-  getEmail: PropTypes.string.isRequired,
-};
+  getUsername: PropTypes.string,
+  getEmail: PropTypes.string,
+  getScore: PropTypes.number,
+}.isRequired;
 
 const mapStateToProps = (state) => ({
   getUsername: state.player.name,
   getEmail: state.player.gravatarEmail,
+  getScore: state.player.score,
 });
 
 export default connect(mapStateToProps)(Header);
