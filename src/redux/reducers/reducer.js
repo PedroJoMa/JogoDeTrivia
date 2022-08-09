@@ -2,7 +2,7 @@ import { ADD_USER, ADD_SCORE, ADD_ASSERTIONS } from '../actions';
 
 const INITIAL_STATE = {
   name: '',
-  assertions: '',
+  assertions: 0,
   score: 0,
   gravatarEmail: '',
 };
