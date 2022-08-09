@@ -16,6 +16,7 @@ class Game extends React.Component {
       timer: 30,
       disabled: true,
       responses: [],
+      pushedAnswer: false,
     };
     this.count = 5;
   }
@@ -23,6 +24,13 @@ class Game extends React.Component {
   componentDidMount() {
     this.requestQuestion();
     this.timeToThink();
+  }
+
+  componentWillUnmount() {
+    const { timer } = this.state;
+    if (timer === 0) {
+      clearInterval(this.answerTime);
+    }
   }
 
   timeToThink = () => {
@@ -33,7 +41,6 @@ class Game extends React.Component {
         this.setState({ disabled: false });
         this.handleTimer();
       }
-
       this.count -= 1;
     }, ONE_SECOND);
   }
@@ -59,8 +66,6 @@ class Game extends React.Component {
           clearInterval(this.answerTime);
           return {
             disabled: true,
-            // questionIndex: prevState.questionIndex + 1,
-            // timer: 35,
           };
         }
       });
@@ -105,6 +110,17 @@ class Game extends React.Component {
       this.setRandomOrderAnswers);
   }
 
+  nextQuestion = () => {
+    this.setState((prevState) => {
+      const PENULTIMATE_QUESTIONS = 3;
+      const { history } = this.props;
+      if (prevState.questionIndex <= PENULTIMATE_QUESTIONS) {
+        return { questionIndex: prevState.questionIndex + 1, pushedAnswer: false };
+      }
+      history.push('/feedback');
+    }, this.setRandomOrderAnswers);
+  }
+
   setScore = (difficulty, answer) => {
     const { timer } = this.state;
     const { dispatchScore } = this.props;
@@ -127,13 +143,21 @@ class Game extends React.Component {
       default:
         score = 0;
       }
-      // console.log(score);
       dispatchScore(score);
     }
+    this.setState({ pushedAnswer: true });
   }
 
   render() {
-    const { questions, questionIndex, loading, disabled, timer, responses } = this.state;
+    const {
+      questions,
+      questionIndex,
+      loading,
+      disabled,
+      timer,
+      responses,
+      pushedAnswer,
+    } = this.state;
     const currQuestion = questions[questionIndex];
 
     return loading ? (<div> Loading...</div>) : (
@@ -159,6 +183,15 @@ class Game extends React.Component {
               </button>
             ))}
           </div>
+          {pushedAnswer && (
+            <button
+              data-testid="btn-next"
+              type="button"
+              onClick={ this.nextQuestion }
+            >
+              Next
+            </button>
+          )}
         </main>
       </div>
     );
