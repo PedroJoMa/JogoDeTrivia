@@ -3,7 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Header from '../components/Header';
 import '../styles/Game.css';
-import { addScore } from '../redux/actions';
+import { addScore, addAssertions } from '../redux/actions';
 
 class Game extends React.Component {
   constructor(props) {
@@ -17,6 +17,7 @@ class Game extends React.Component {
       disabled: true,
       responses: [],
       pushedAnswer: false,
+      assertions: 0,
     };
     this.count = 5;
   }
@@ -112,11 +113,14 @@ class Game extends React.Component {
 
   nextQuestion = () => {
     this.setState((prevState) => {
+      const { assertions } = this.state;
+      const { dispatchAssertions } = this.props;
       const PENULTIMATE_QUESTIONS = 3;
       const { history } = this.props;
       if (prevState.questionIndex <= PENULTIMATE_QUESTIONS) {
         return { questionIndex: prevState.questionIndex + 1, pushedAnswer: false };
       }
+      dispatchAssertions(assertions);
       history.push('/feedback');
     }, this.setRandomOrderAnswers);
   }
@@ -124,8 +128,6 @@ class Game extends React.Component {
   setScore = (difficulty, answer) => {
     const { timer } = this.state;
     const { dispatchScore } = this.props;
-    // console.log(difficulty);
-    // console.log(answer);
     if (answer === 'correct-answer') {
       let score = 0;
       const TEN_POINTS = 10;
@@ -144,6 +146,7 @@ class Game extends React.Component {
         score = 0;
       }
       dispatchScore(score);
+      this.setState((prevState) => ({ assertions: prevState.assertions + 1 }));
     }
     this.setState({ pushedAnswer: true });
   }
@@ -200,11 +203,13 @@ class Game extends React.Component {
 
 const mapDispatchToProps = (dispatch) => ({
   dispatchScore: (payload) => dispatch(addScore(payload)),
+  dispatchAssertions: (payload) => dispatch(addAssertions(payload)),
 });
 
 Game.propTypes = {
   history: PropTypes.object,
   dispatchScore: PropTypes.func,
+  dispatchAssertions: PropTypes.number,
 }.isRequired;
 
 export default connect(null, mapDispatchToProps)(Game);

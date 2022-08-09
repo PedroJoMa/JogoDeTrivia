@@ -1,6 +1,7 @@
 export const LOGIN = 'LOGIN';
 export const ADD_USER = 'ADD_USER';
 export const ADD_SCORE = 'ADD_SCORE';
+export const ADD_ASSERTIONS = 'ADD_ASSERTIONS';
 
 export const login = (payload) => ({
   type: LOGIN,
@@ -14,5 +15,10 @@ export const addUser = (payload) => ({
 
 export const addScore = (payload) => ({
   type: ADD_SCORE,
+  payload,
+});
+
+export const addAssertions = (payload) => ({
+  type: ADD_ASSERTIONS,
   payload,
 });
