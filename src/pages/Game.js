@@ -26,6 +26,13 @@ class Game extends React.Component {
     this.timeToThink();
   }
 
+  componentWillUnmount() {
+    const { timer } = this.state;
+    if (timer === 0) {
+      clearInterval(this.answerTime);
+    }
+  }
+
   timeToThink = () => {
     const ONE_SECOND = 1000;
     this.thinkTime = setInterval(() => {
@@ -34,7 +41,6 @@ class Game extends React.Component {
         this.setState({ disabled: false });
         this.handleTimer();
       }
-
       this.count -= 1;
     }, ONE_SECOND);
   }
@@ -60,8 +66,6 @@ class Game extends React.Component {
           clearInterval(this.answerTime);
           return {
             disabled: true,
-            // questionIndex: prevState.questionIndex + 1,
-            // timer: 35,
           };
         }
       });
@@ -109,9 +113,11 @@ class Game extends React.Component {
   nextQuestion = () => {
     this.setState((prevState) => {
       const PENULTIMATE_QUESTIONS = 3;
+      const { history } = this.props;
       if (prevState.questionIndex <= PENULTIMATE_QUESTIONS) {
         return { questionIndex: prevState.questionIndex + 1, pushedAnswer: false };
       }
+      history.push('/feedback');
     }, this.setRandomOrderAnswers);
   }
 
