@@ -16,6 +16,7 @@ class Game extends React.Component {
       timer: 30,
       disabled: true,
       responses: [],
+      pushedAnswer: false,
     };
     this.count = 5;
   }
@@ -105,6 +106,15 @@ class Game extends React.Component {
       this.setRandomOrderAnswers);
   }
 
+  nextQuestion = () => {
+    this.setState((prevState) => {
+      const PENULTIMATE_QUESTIONS = 3;
+      if (prevState.questionIndex <= PENULTIMATE_QUESTIONS) {
+        return { questionIndex: prevState.questionIndex + 1, pushedAnswer: false };
+      }
+    }, this.setRandomOrderAnswers);
+  }
+
   setScore = (difficulty, answer) => {
     const { timer } = this.state;
     const { dispatchScore } = this.props;
@@ -127,13 +137,21 @@ class Game extends React.Component {
       default:
         score = 0;
       }
-      // console.log(score);
       dispatchScore(score);
     }
+    this.setState({ pushedAnswer: true });
   }
 
   render() {
-    const { questions, questionIndex, loading, disabled, timer, responses } = this.state;
+    const {
+      questions,
+      questionIndex,
+      loading,
+      disabled,
+      timer,
+      responses,
+      pushedAnswer,
+    } = this.state;
     const currQuestion = questions[questionIndex];
 
     return loading ? (<div> Loading...</div>) : (
@@ -159,6 +177,15 @@ class Game extends React.Component {
               </button>
             ))}
           </div>
+          {pushedAnswer && (
+            <button
+              data-testid="btn-next"
+              type="button"
+              onClick={ this.nextQuestion }
+            >
+              Next
+            </button>
+          )}
         </main>
       </div>
     );
