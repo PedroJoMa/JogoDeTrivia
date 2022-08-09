@@ -1,9 +1,11 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { connect } from 'react-redux';
 import Header from '../components/Header';
 import '../styles/Game.css';
+import { addScore } from '../redux/actions';
 
-export default class Game extends React.Component {
+class Game extends React.Component {
   constructor(props) {
     super(props);
 
@@ -103,6 +105,33 @@ export default class Game extends React.Component {
       this.setRandomOrderAnswers);
   }
 
+  setScore = (difficulty, answer) => {
+    const { timer } = this.state;
+    const { dispatchScore } = this.props;
+    // console.log(difficulty);
+    // console.log(answer);
+    if (answer === 'correct-answer') {
+      let score = 0;
+      const TEN_POINTS = 10;
+      const THREE_POINTS = 3;
+      switch (difficulty) {
+      case 'easy':
+        score = TEN_POINTS + (timer * 1);
+        break;
+      case 'medium':
+        score = TEN_POINTS + (timer * 2);
+        break;
+      case 'hard':
+        score = TEN_POINTS + (timer * THREE_POINTS);
+        break;
+      default:
+        score = 0;
+      }
+      // console.log(score);
+      dispatchScore(score);
+    }
+  }
+
   render() {
     const { questions, questionIndex, loading, disabled, timer, responses } = this.state;
     const currQuestion = questions[questionIndex];
@@ -124,6 +153,7 @@ export default class Game extends React.Component {
                 type="button"
                 data-testid={ test }
                 disabled={ disabled }
+                onClick={ () => this.setScore(currQuestion.difficulty, test) }
               >
                 {answer}
               </button>
@@ -135,6 +165,13 @@ export default class Game extends React.Component {
   }
 }
 
+const mapDispatchToProps = (dispatch) => ({
+  dispatchScore: (payload) => dispatch(addScore(payload)),
+});
+
 Game.propTypes = {
   history: PropTypes.object,
+  dispatchScore: PropTypes.func,
 }.isRequired;
+
+export default connect(null, mapDispatchToProps)(Game);
