@@ -80,6 +80,5 @@ describe('Testando a página Login', () => {
     const { pathname } = history.location;
     expect(pathname).toBe('/settings');
 
-
   })
 })

@@ -9,7 +9,6 @@ import { addScore, addAssertions } from '../redux/actions';
 class Game extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
       questions: [],
       questionIndex: 0,
@@ -19,6 +18,7 @@ class Game extends React.Component {
       responses: [],
       pushedAnswer: false,
       assertions: 0,
+      isClicked: false,
     };
     this.count = 5;
   }
@@ -39,9 +39,9 @@ class Game extends React.Component {
     const ONE_SECOND = 1000;
     if (this.answerTime) {
       clearInterval(this.answerTime);
-      this.count = 5;
-      this.setState({ timer: 30, disabled: true });
     }
+    this.count = 5;
+    this.setState({ timer: 30, disabled: true });
     this.thinkTime = setInterval(() => {
       if (this.count === 0) {
         clearInterval(this.thinkTime);
@@ -67,14 +67,13 @@ class Game extends React.Component {
       this.setState({ disabled: false });
     }
     if (timer === 0) {
-      this.setState((prevState) => {
-        const PENULTIMATE_QUESTION = 3;
-        if (prevState.questionIndex <= PENULTIMATE_QUESTION) {
-          clearInterval(this.answerTime);
-          return {
-            disabled: true,
-          };
-        }
+      this.setState(() => {
+        clearInterval(this.answerTime);
+        return {
+          disabled: true,
+          pushedAnswer: true,
+          isClicked: true,
+        };
       });
     }
   }
@@ -96,7 +95,6 @@ class Game extends React.Component {
           color: 'wrongAnswer',
         })),
     ];
-
     this.setState({ responses: response.sort(() => Math.random() - RANDOM_HELPER) });
   };
 
@@ -124,7 +122,11 @@ class Game extends React.Component {
       const PENULTIMATE_QUESTIONS = 3;
       const { history } = this.props;
       if (prevState.questionIndex <= PENULTIMATE_QUESTIONS) {
-        return { questionIndex: prevState.questionIndex + 1, pushedAnswer: false };
+        return {
+          questionIndex: prevState.questionIndex + 1,
+          pushedAnswer: false,
+          isClicked: false,
+        };
       }
       dispatchAssertions(assertions);
       this.sendRankingToLocalStorage();
@@ -156,9 +158,11 @@ class Game extends React.Component {
         score = 0;
       }
       dispatchScore(score);
-      this.setState((prevState) => ({ assertions: prevState.assertions + 1 }));
+      this.setState((prevState) => ({
+        assertions: prevState.assertions + 1, isClicked: true,
+      }));
     }
-    this.setState({ pushedAnswer: true });
+    this.setState({ pushedAnswer: true, isClicked: true });
   }
 
   sendRankingToLocalStorage = () => {
@@ -180,16 +184,10 @@ class Game extends React.Component {
 
   render() {
     const {
-      questions,
-      questionIndex,
-      loading,
-      disabled,
-      timer,
-      responses,
-      pushedAnswer,
+      questions, questionIndex, loading, disabled,
+      timer, responses, pushedAnswer, isClicked,
     } = this.state;
     const currQuestion = questions[questionIndex];
-
     return loading ? (<div> Loading...</div>) : (
       <div>
         <Header />
@@ -202,7 +200,7 @@ class Game extends React.Component {
           <div data-testid="answer-options">
             {responses.map(({ answer, test, color }) => (
               <button
-                className={ color }
+                className={ isClicked ? color : '' }
                 key={ answer }
                 type="button"
                 data-testid={ test }
