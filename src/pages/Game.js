@@ -37,6 +37,11 @@ class Game extends React.Component {
 
   timeToThink = () => {
     const ONE_SECOND = 1000;
+    if (this.answerTime) {
+      clearInterval(this.answerTime);
+      this.count = 5;
+      this.setState({ timer: 30, disabled: true });
+    }
     this.thinkTime = setInterval(() => {
       if (this.count === 0) {
         clearInterval(this.thinkTime);
