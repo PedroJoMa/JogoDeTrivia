@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
+import md5 from 'crypto-js/md5';
 import Header from '../components/Header';
 import '../styles/Game.css';
 import { addScore, addAssertions } from '../redux/actions';
@@ -121,8 +122,12 @@ class Game extends React.Component {
         return { questionIndex: prevState.questionIndex + 1, pushedAnswer: false };
       }
       dispatchAssertions(assertions);
+      this.sendRankingToLocalStorage();
       history.push('/feedback');
-    }, this.setRandomOrderAnswers);
+    }, () => {
+      this.timeToThink();
+      this.setRandomOrderAnswers();
+    });
   }
 
   setScore = (difficulty, answer) => {
@@ -149,6 +154,23 @@ class Game extends React.Component {
       this.setState((prevState) => ({ assertions: prevState.assertions + 1 }));
     }
     this.setState({ pushedAnswer: true });
+  }
+
+  sendRankingToLocalStorage = () => {
+    const { getScore, getEmail, getName } = this.props;
+    const convertEmail = md5(getEmail).toString();
+    const picture = `https://www.gravatar.com/avatar/${convertEmail}`;
+    const playerInfo = {
+      name: getName,
+      score: getScore,
+      picture,
+    };
+    if (localStorage.getItem('ranking')) {
+      const previousRanking = JSON.parse(localStorage.getItem('ranking'));
+      localStorage.setItem('ranking', JSON.stringify([playerInfo, ...previousRanking]));
+    } else {
+      localStorage.setItem('ranking', JSON.stringify([playerInfo]));
+    }
   }
 
   render() {
@@ -201,6 +223,12 @@ class Game extends React.Component {
   }
 }
 
+const mapStateToProps = (state) => ({
+  getName: state.player.name,
+  getEmail: state.player.gravatarEmail,
+  getScore: state.player.score,
+});
+
 const mapDispatchToProps = (dispatch) => ({
   dispatchScore: (payload) => dispatch(addScore(payload)),
   dispatchAssertions: (payload) => dispatch(addAssertions(payload)),
@@ -212,4 +240,4 @@ Game.propTypes = {
   dispatchAssertions: PropTypes.number,
 }.isRequired;
 
-export default connect(null, mapDispatchToProps)(Game);
+export default connect(mapStateToProps, mapDispatchToProps)(Game);

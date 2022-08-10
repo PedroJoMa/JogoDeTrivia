@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import logo from '../trivia.png';
 import '../App.css';
-import { addUser } from '../redux/actions';
+import { addUser, clearScore } from '../redux/actions';
 
 class Login extends React.Component {
   state = {
@@ -37,12 +37,14 @@ class Login extends React.Component {
   }
 
   handleClick = async () => {
+    const { dispatchClearScore } = this.props;
     const END_POINT = 'https://opentdb.com/api_token.php?command=request';
     const response = await fetch(END_POINT);
     const data = (await response.json()).token;
     localStorage.setItem('token', data);
     this.addUser();
     const { history } = this.props;
+    dispatchClearScore();
     history.push('/game');
   }
 
@@ -91,10 +93,12 @@ class Login extends React.Component {
 
 Login.propTypes = {
   history: PropTypes.object,
+  dispatchClearScore: PropTypes.func,
 }.isRequired;
 
 const mapDispatchToProps = (dispatch) => ({
   addUserDispatch: (payload) => dispatch(addUser(payload)),
+  dispatchClearScore: () => dispatch(clearScore()),
 });
 
 export default connect(null, mapDispatchToProps)(Login);
