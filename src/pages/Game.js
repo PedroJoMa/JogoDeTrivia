@@ -191,11 +191,13 @@ class Game extends React.Component {
     return loading ? (<div> Loading...</div>) : (
       <div>
         <Header />
-        <main>
-          <p data-testid="question-category">{currQuestion.category}</p>
-          <p>{timer}</p>
+        <main className="header-gamer">
+          <p className="timer">{timer}</p>
+          <p className="category" data-testid="question-categor">
+            {currQuestion.category}
+          </p>
           <p data-testid="question-text">
-            {currQuestion.question}
+            {currQuestion.question.replace(/&quot;/g, '"')}
           </p>
           <div data-testid="answer-options">
             {responses.map(({ answer, test, color }) => (
@@ -207,12 +209,13 @@ class Game extends React.Component {
                 disabled={ disabled }
                 onClick={ () => this.setScore(currQuestion.difficulty, test) }
               >
-                {answer}
+                {answer.replace(/&quot;/g, '"')}
               </button>
             ))}
           </div>
           {pushedAnswer && (
             <button
+              className="button-next"
               data-testid="btn-next"
               type="button"
               onClick={ this.nextQuestion }

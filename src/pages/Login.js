@@ -55,6 +55,7 @@ class Login extends React.Component {
         <header className="App-header">
           <img src={ logo } className="App-logo" alt="logo" />
           <input
+            className="input-player-name"
             data-testid="input-player-name"
             type="text"
             name="username"
@@ -63,6 +64,7 @@ class Login extends React.Component {
             onChange={ this.handleChange }
           />
           <input
+            className="input-gravatar-email"
             data-testid="input-gravatar-email"
             type="email"
             placeholder="Email"

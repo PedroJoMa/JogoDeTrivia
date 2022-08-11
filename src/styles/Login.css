@@ -82,3 +82,12 @@ input {
     transform: translate3d(4px, 0, 0);
   }
 }
+
+.Login-Header {
+  border: 1px solid red;
+  display: flex;
+}
+
+.input-player-name {
+  border: 1px solid red;
+}
