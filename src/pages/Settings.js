@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import '../styles/Settings.css';
 
 export default class Settings extends React.Component {
   backMenu = () => {

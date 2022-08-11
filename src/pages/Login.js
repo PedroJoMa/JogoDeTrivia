@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import logo from '../trivia.png';
-import '../App.css';
 import { addUser, clearScore } from '../redux/actions';
 
 class Login extends React.Component {
@@ -55,6 +54,7 @@ class Login extends React.Component {
         <header className="App-header">
           <img src={ logo } className="App-logo" alt="logo" />
           <input
+            className="input-player-name"
             data-testid="input-player-name"
             type="text"
             name="username"
@@ -63,6 +63,7 @@ class Login extends React.Component {
             onChange={ this.handleChange }
           />
           <input
+            className="input-gravatar-email"
             data-testid="input-gravatar-email"
             type="email"
             placeholder="Email"
@@ -71,6 +72,7 @@ class Login extends React.Component {
             onChange={ this.handleChange }
           />
           <button
+            className="btn-play"
             data-testid="btn-play"
             type="button"
             disabled={ disabled }
@@ -79,6 +81,7 @@ class Login extends React.Component {
             Play
           </button>
           <button
+            className="btn-settings"
             type="button"
             data-testid="btn-settings"
             onClick={ this.handleClickSettings }

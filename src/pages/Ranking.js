@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import '../styles/Ranking.css';
 
 class Ranking extends React.Component {
   goHome = () => {
@@ -19,24 +20,31 @@ class Ranking extends React.Component {
 
   render() {
     return (
-      <div data-testid="ranking-title">
-        {this.getRankingFromLocalStorage().map((player, index) => (
-          <div key={ index }>
-            <img
-              alt="Perfil"
-              src={ player.picture }
-            />
-            <p data-testid={ `player-name-${index}` }>{ player.name }</p>
-            <p data-testid={ `player-score-${index}` }>{player.score}</p>
-          </div>
-        ))}
+      <div className="ranking-container" data-testid="ranking-title">
         <button
           type="button"
           data-testid="btn-go-home"
           onClick={ this.goHome }
         >
-          home
+          Play again
         </button>
+        {this.getRankingFromLocalStorage().map((player, index) => (
+          <div className="ranking" key={ index }>
+            <img
+              alt="Perfil"
+              src={ player.picture }
+            />
+            <div className="div-info">
+              <p data-testid={ `player-name-${index}` }>{ `Name: ${player.name}` }</p>
+              <p
+                data-testid={ `player-score-${index}` }
+              >
+                {`Total score: ${player.score}`}
+
+              </p>
+            </div>
+          </div>
+        ))}
       </div>
     );
   }
