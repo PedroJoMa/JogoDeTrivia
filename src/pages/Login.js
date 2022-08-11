@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import logo from '../trivia.png';
-import '../App.css';
+import '../styles/Login.css';
 import { addUser, clearScore } from '../redux/actions';
 
 class Login extends React.Component {
