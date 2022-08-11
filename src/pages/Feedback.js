@@ -26,7 +26,7 @@ class Feedback extends React.Component {
           <p
             data-testid="feedback-total-question"
           >
-            { `Total question: ${getAssertions}` }
+            { `Total assertions: ${getAssertions}` }
 
           </p>
           <p data-testid="feedback-total-score">{ `Total score: ${getScore}` }</p>
