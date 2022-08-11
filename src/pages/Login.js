@@ -70,21 +70,24 @@ class Login extends React.Component {
             value={ email }
             onChange={ this.handleChange }
           />
-          <button
-            data-testid="btn-play"
-            type="button"
-            disabled={ disabled }
-            onClick={ this.handleClick }
-          >
-            Play
-          </button>
-          <button
-            type="button"
-            data-testid="btn-settings"
-            onClick={ this.handleClickSettings }
-          >
-            Settings
-          </button>
+          <div className="buttons-container">
+            <button
+              className="btn-play"
+              data-testid="btn-play"
+              type="button"
+              disabled={ disabled }
+              onClick={ this.handleClick }
+            >
+              Play
+            </button>
+            <button
+              type="button"
+              data-testid="btn-settings"
+              onClick={ this.handleClickSettings }
+            >
+              Settings
+            </button>
+          </div>
         </header>
       </div>
     );
