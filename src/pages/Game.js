@@ -70,11 +70,7 @@ class Game extends React.Component {
     if (timer === 0) {
       this.setState(() => {
         clearInterval(this.answerTime);
-        return {
-          disabled: true,
-          pushedAnswer: true,
-          isClicked: true,
-        };
+        return { disabled: true, pushedAnswer: true, isClicked: true };
       });
     }
   }
