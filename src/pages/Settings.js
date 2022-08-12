@@ -10,7 +10,7 @@ export default class Settings extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="settings-container">
         <h1 data-testid="settings-title">Settings</h1>
         <button type="button" onClick={ this.backMenu }>Voltar ao Menu</button>
       </div>

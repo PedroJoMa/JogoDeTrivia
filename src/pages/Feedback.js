@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-import '../styles/Feedback.css';
 
+import '../styles/Feedback.css';
 import Header from '../components/Header';
 
 class Feedback extends React.Component {
