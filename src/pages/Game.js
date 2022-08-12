@@ -29,6 +29,7 @@ class Game extends React.Component {
   }
 
   componentWillUnmount() {
+    console.log('entrou');
     const { timer } = this.state;
     if (timer === 0) {
       clearInterval(this.answerTime);
