@@ -10,6 +10,7 @@ input {
   flex-basis: 128px auto;
   height: 32px;
   margin-bottom: 8px;
+  text-align: center;
   width: 240px;
 }
 
