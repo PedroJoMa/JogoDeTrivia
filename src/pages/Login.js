@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import logo from '../trivia.png';
 import '../styles/Login.css';
 import { addUser, clearScore } from '../redux/actions';
+import '../styles/Login.css';
 
 class Login extends React.Component {
   state = {
