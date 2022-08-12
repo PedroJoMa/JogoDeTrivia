@@ -5,7 +5,7 @@
   display: flex;
   font-size: calc(5px + 2vmin);
   gap: 20px;
-  justify-content: start;
+  justify-content: flex-start;
   padding: 20px;
 }
 
