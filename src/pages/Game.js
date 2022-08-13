@@ -16,7 +16,6 @@ class Game extends React.Component {
       timer: 30,
       disabled: true,
       responses: [],
-      pushedAnswer: false,
       assertions: 0,
       isClicked: false,
     };
@@ -29,10 +28,7 @@ class Game extends React.Component {
   }
 
   componentWillUnmount() {
-    const { timer } = this.state;
-    if (timer === 0) {
-      clearInterval(this.answerTime);
-    }
+    clearInterval(this.answerTime);
   }
 
   timeToThink = () => {
@@ -62,20 +58,23 @@ class Game extends React.Component {
 
   handleEnableButton = () => {
     const THIRTY_SECONDS = 30;
-    const { timer } = this.state;
+    const { timer, isClicked } = this.state;
     if (timer === THIRTY_SECONDS) {
       this.setState({ disabled: false });
     }
-    if (timer === 0) {
-      this.setState(() => {
-        clearInterval(this.answerTime);
-        return {
-          disabled: true,
-          pushedAnswer: true,
-          isClicked: true,
-        };
-      });
+    if (timer === 0 || isClicked) {
+      clearInterval(this.answerTime);
+      this.setState(() => ({
+        disabled: true,
+        isClicked: true,
+      }));
     }
+  }
+
+  replaceStrings = (phrase) => {
+    let finalPhrase = phrase.replace(/&#039;/g, '\'');
+    finalPhrase = finalPhrase.replace(/&quot;/g, '"');
+    return finalPhrase;
   }
 
   setRandomOrderAnswers = () => {
@@ -105,17 +104,16 @@ class Game extends React.Component {
     const response = await fetch(ApiQuestion);
     const data = await response.json();
     const { results } = data;
-
     if (results.length === 0) {
       localStorage.clear();
       history.push('/');
     }
-
     this.setState({ questions: results, loading: false },
       this.setRandomOrderAnswers);
   }
 
   nextQuestion = () => {
+    clearInterval(this.answerTime);
     this.setState((prevState) => {
       const { assertions } = this.state;
       const { dispatchAssertions } = this.props;
@@ -124,7 +122,6 @@ class Game extends React.Component {
       if (prevState.questionIndex <= PENULTIMATE_QUESTIONS) {
         return {
           questionIndex: prevState.questionIndex + 1,
-          pushedAnswer: false,
           isClicked: false,
         };
       }
@@ -162,7 +159,7 @@ class Game extends React.Component {
         assertions: prevState.assertions + 1, isClicked: true,
       }));
     }
-    this.setState({ pushedAnswer: true, isClicked: true });
+    this.setState({ isClicked: true });
   }
 
   sendRankingToLocalStorage = () => {
@@ -185,7 +182,7 @@ class Game extends React.Component {
   render() {
     const {
       questions, questionIndex, loading, disabled,
-      timer, responses, pushedAnswer, isClicked,
+      timer, responses, isClicked,
     } = this.state;
     const currQuestion = questions[questionIndex];
     return loading ? (<div> Loading...</div>) : (
@@ -193,11 +190,11 @@ class Game extends React.Component {
         <Header />
         <main className="header-gamer">
           <p className="timer">{timer}</p>
-          <p className="category" data-testid="question-categor">
+          <p className="category" data-testid="question-category">
             {currQuestion.category}
           </p>
           <p data-testid="question-text">
-            {currQuestion.question.replace(/&quot;/g, '"')}
+            {this.replaceStrings(currQuestion.question)}
           </p>
           <div data-testid="answer-options">
             {responses.map(({ answer, test, color }) => (
@@ -209,11 +206,11 @@ class Game extends React.Component {
                 disabled={ disabled }
                 onClick={ () => this.setScore(currQuestion.difficulty, test) }
               >
-                {answer.replace(/&quot;/g, '"')}
+                {this.replaceStrings(answer)}
               </button>
             ))}
           </div>
-          {pushedAnswer && (
+          {isClicked && (
             <button
               className="button-next"
               data-testid="btn-next"
