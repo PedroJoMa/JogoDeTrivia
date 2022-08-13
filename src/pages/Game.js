@@ -28,7 +28,9 @@ class Game extends React.Component {
   }
 
   componentWillUnmount() {
-    clearInterval(this.answerTime);
+    if (this.answerTime) {
+      clearInterval(this.answerTime);
+    }
   }
 
   timeToThink = () => {
