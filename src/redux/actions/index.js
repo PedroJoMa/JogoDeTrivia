@@ -2,7 +2,7 @@ export const LOGIN = 'LOGIN';
 export const ADD_USER = 'ADD_USER';
 export const ADD_SCORE = 'ADD_SCORE';
 export const ADD_ASSERTIONS = 'ADD_ASSERTIONS';
-export const CLEAR_SCORE = 'CLEAR_SCORE';
+export const CLEAR_SCORE_AND_ASSERTIONS = 'CLEAR_SCORE_AND_ASSERTIONS';
 
 export const login = (payload) => ({
   type: LOGIN,
@@ -24,6 +24,6 @@ export const addAssertions = (payload) => ({
   payload,
 });
 
-export const clearScore = () => ({
-  type: CLEAR_SCORE,
+export const clearScoreAndAssertions = () => ({
+  type: CLEAR_SCORE_AND_ASSERTIONS,
 });
