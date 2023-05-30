@@ -1,4 +1,4 @@
-# Boas-vindas ao meu Projeto App de Receitas!
+# Boas-vindas ao meu Jogo de Trivia!
 
 Este projeto foi desenvolvido em grupo 👥, agradecimentos aos colegas [Pedro Costa](https://github.com/pedrocosta012), [Matheus Santos](https://github.com/mtssantos96), [Jean Rosa](https://github.com/Jean-Rosa19), [Marcelo Marques](https://github.com/marcelo-mls) que participaram da organização e confecção de componentes / páginas.
 
